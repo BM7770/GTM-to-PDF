@@ -694,7 +694,7 @@
     $("mDel") && ($("mDel").onclick = confirmDelete);
   }
   /** Opens the phone's share sheet with the app link (native share in the APK, Web Share in the browser). */
-  const APP_URL = "https://bm7770.github.io/Guemarah-to-PDF/app/";
+  const APP_URL = "https://bm7770.github.io/GTM-to-PDF/";
   async function shareApp() {
     const data = { title: t("appName"), text: t("shareAppText"), url: APP_URL };
     const P_ = window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() && window.Capacitor.Plugins;
