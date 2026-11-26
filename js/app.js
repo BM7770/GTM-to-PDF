@@ -109,11 +109,10 @@
         row.scrollLeft += e.deltaY; e.preventDefault();
       }, { passive: false });
     }
-    // Always visible in the top bar: "+ Translate" and the language button.
+    // Always visible in the top bar: the language button.
     const act = $("sAct");
     if (act) {
-      act.innerHTML = `<a class="snewtop${cur === "translate" ? " on" : ""}" href="#/translate">${icon("plus")}<span>${esc(t("tabNew"))}</span></a>
-        <button class="pill" id="sLangTop" type="button" aria-label="${esc(t("appLang"))}">${icon("globe")}<span>${LC[L].toUpperCase()}</span></button>`;
+      act.innerHTML = `<button class="pill" id="sLangTop" type="button" aria-label="${esc(t("appLang"))}">${icon("globe")}<span>${LC[L].toUpperCase()}</span></button>`;
       $("sLangTop").onclick = openAppLang;
     }
     const pt = $("ptitle"); if (!pt) return;
@@ -586,7 +585,7 @@
       <label class="search" style="margin-top:12px">${icon("search")}<input id="rq" type="search" placeholder="${esc(t("searchWords"))}" autocomplete="off"></label>
       <div id="rMsg"></div>
       <div class="wlist" id="rList" style="margin-top:12px"></div>`;
-    cta(`<div id="pgr"></div><div class="row2"><button class="btn ghost" id="toPdf" type="button">${icon("file")}${esc(t("viewPdf"))}</button><button class="btn primary" id="quickDl" type="button">${icon("download")}<span>${esc(t("dlShort"))}</span></button></div>`);
+    cta(`<div id="pgr"></div><div class="row2"><button class="btn primary" id="toPdf" type="button">${icon("file")}${esc(t("viewPdf"))}</button><button class="btn primary" id="quickDl" type="button">${icon("download")}<span>${esc(t("dlShort"))}</span></button></div>`);
     $("toPdf").onclick = () => go("pdf");
     $("quickDl").onclick = () => downloadPdf($("quickDl"));
     $("rq").oninput = e => { q = e.target.value.trim(); drawList() };
