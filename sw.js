@@ -2,7 +2,7 @@
  * App files are network-first (cached for offline use); tractate CSVs and vocabulary batches are cached the
  * first time they are used (network-first, so updates in the repository are
  * picked up when online, and the cached copy is used offline). */
-const VERSION = "gt-app-v1.1d";
+const VERSION = "gt-app-v1.2";
 const SHELL = [
   "./", "index.html", "manifest.webmanifest", "data-index.json",
   "css/app.css", "css/pdf.css", "fonts/fonts.css",

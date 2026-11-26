@@ -107,7 +107,7 @@ const GTSheet = (() => {
         onProgress && onProgress(i, pages.length);
         const el = pages[i];
         const canvas = await htmlToImage.toCanvas(el, {
-          pixelRatio: 2.4, backgroundColor: "#ffffff", fontEmbedCSS: fontCSS || undefined,
+          pixelRatio: 2, backgroundColor: "#ffffff", fontEmbedCSS: fontCSS || undefined,
           width: el.offsetWidth, height: el.offsetHeight, cacheBust: false,
         });
         if (i) pdf.addPage("a4", "portrait");

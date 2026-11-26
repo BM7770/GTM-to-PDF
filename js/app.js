@@ -578,7 +578,7 @@
       <label class="search" style="margin-top:12px">${icon("search")}<input id="rq" type="search" placeholder="${esc(t("searchWords"))}" autocomplete="off"></label>
       <div id="rMsg"></div>
       <div class="wlist" id="rList" style="margin-top:12px"></div>`;
-    cta(`<div class="row2"><button class="btn primary" id="toPdf" type="button" style="flex:2">${icon("file")}${esc(t("viewPdf"))}</button><button class="btn ghost ico" id="quickDl" type="button" aria-label="${esc(t("dl"))}">${icon("download")}</button></div>`);
+    cta(`<div id="pgr"></div><div class="row2"><button class="btn ghost" id="toPdf" type="button">${icon("file")}${esc(t("viewPdf"))}</button><button class="btn primary" id="quickDl" type="button">${icon("download")}<span>${esc(t("dlShort"))}</span></button></div>`);
     $("toPdf").onclick = () => go("pdf");
     $("quickDl").onclick = () => downloadPdf($("quickDl"));
     $("rq").oninput = e => { q = e.target.value.trim(); drawList() };
@@ -614,16 +614,48 @@
   /* -------------------------------------------------------------------- pdf */
   function currentSheet() { return P.render(E.pick(S.result.words, S.lvl, S.sort), sheetOpts(), $("meas")) }
   const pdfName = () => S.result.fname || "GTM to PDF";
-  async function makeBlob(btn) {
-    const label = btn && btn.innerHTML; if (btn) { btn.disabled = true; btn.innerHTML = `<span>${esc(t("making"))}</span>` }
-    try {
-      if (!S.result.words.length) throw Object.assign(new Error(st("noneYet")), { user: true });
-      const sh = currentSheet();
-      return await P.toPdfBlob(sh.html, pdfName(), (i, n) => { if (btn) btn.innerHTML = `<span>${esc(t("making"))} ${Math.min(i + 1, n)}/${n}</span>` });
-    } finally { if (btn) { btn.disabled = false; btn.innerHTML = label } }
+  /* PDF cache: the PDF for the current settings is made once (in the background on the PDF page)
+     and reused, so Download/Share are instant. Jobs run one at a time because they share #exportHost. */
+  const pdfKey = () => JSON.stringify([S.result.ref, S.result.fname, S.result.words.length, S.lvl, S.sort, sheetOpts()]);
+  const PC = { key: null, blob: null, job: null, prog: null, last: [0, 0] };
+  let pdfQueue = Promise.resolve();
+  function buildPdf() {
+    const key = pdfKey();
+    if (PC.key === key && (PC.blob || PC.job)) return PC.blob ? Promise.resolve(PC.blob) : PC.job;
+    if (!S.result.words.length) return Promise.reject(Object.assign(new Error(st("noneYet")), { user: true }));
+    const sh = currentSheet();
+    PC.key = key; PC.blob = null; PC.last = [0, sh.pages];
+    const job = pdfQueue.then(() => P.toPdfBlob(sh.html, pdfName(), (i, n) => { PC.last = [i, n]; PC.prog && PC.prog(i, n) }));
+    pdfQueue = job.catch(() => { });
+    PC.job = job;
+    job.then(b => { if (PC.job === job) { PC.blob = b; PC.job = null } }, () => { if (PC.job === job) { PC.key = null; PC.job = null } });
+    return job;
   }
+  /** Shows a progress strip ("Generating PDF… 2/5") above the buttons while the PDF is made. */
+  async function makeBlob(btn) {
+    const bar = $("pgr"), btns = document.querySelectorAll(".cta .btn");
+    const show = (i, n) => { if (!bar) return; const k = n ? Math.min(i + 1, n) : 0; bar.innerHTML = `<div class="pgr"><i style="width:${n ? Math.round(i / n * 100) : 5}%"></i><span>${esc(t("making"))}${n ? ` ${k}/${n}` : ""}</span></div>` };
+    btns.forEach(b => b.disabled = true);
+    try {
+      const p = buildPdf();
+      if (!PC.blob) { PC.prog = show; show(...PC.last) }
+      return await p;
+    } finally { PC.prog = null; if (bar) bar.innerHTML = ""; btns.forEach(b => b.disabled = false) }
+  }
+  /** Lets the user pick the folder/name (Chrome/Edge on computers); other browsers download normally. */
+  const canPick = () => typeof window.showSaveFilePicker === "function" && !P.isNative();
   async function downloadPdf(btn) {
-    try { const b = await makeBlob(btn); const how = await P.save(b, pdfName() + ".pdf"); toast(how === "native" ? t("savedDocs") : t("saved")) }
+    let handle = null;
+    if (canPick()) {
+      // The dialog must open right on the click, before the PDF is made.
+      try { handle = await window.showSaveFilePicker({ suggestedName: pdfName() + ".pdf", types: [{ description: "PDF", accept: { "application/pdf": [".pdf"] } }] }) }
+      catch (e) { if (e && e.name === "AbortError") return; handle = null }
+    }
+    try {
+      const b = await makeBlob(btn);
+      if (handle) { const w = await handle.createWritable(); await w.write(b); await w.close(); toast(t("saved")); return }
+      const how = await P.save(b, pdfName() + ".pdf"); toast(how === "native" ? t("savedDocs") : t("saved"))
+    }
     catch (e) { console.error(e); toast(e && e.user ? e.message : t("pdfErr")) }
   }
   async function sharePdf(btn) {
@@ -638,13 +670,15 @@
       <div class="pv-info" style="margin-top:14px"><span id="pInfo"></span><button class="chip" id="pLang" type="button">${icon("globe")}${esc(langName(S.lang))}</button></div>
       <div class="pv-wrap"><div class="pv-stage" id="stage"><div class="pv-sheets" id="sheets"></div></div></div>
       ${P.canPrint() ? `<p class="muted tiny" style="text-align:center;margin:6px 8px 0">${esc(t("vectorNote"))}</p>` : ""}`;
-    cta(`<div class="row2"><button class="btn primary" id="pDl" type="button">${icon("download")}<span>${esc(t("dl"))}</span></button><button class="btn tonal ico" id="pSh" type="button" aria-label="${esc(t("share"))}">${icon("share")}</button>${P.canPrint() ? `<button class="btn ghost ico" id="pPr" type="button" aria-label="${esc(t("print"))}">${icon("print")}</button>` : ""}</div>`);
+    cta(`<div id="pgr"></div><div class="row2"><button class="btn primary" id="pDl" type="button">${icon("download")}<span>${esc(t("dl"))}</span></button><button class="btn tonal ico" id="pSh" type="button" aria-label="${esc(t("share"))}">${icon("share")}</button>${P.canPrint() ? `<button class="btn ghost ico" id="pPr" type="button" aria-label="${esc(t("print"))}">${icon("print")}</button>` : ""}</div>`);
     const draw = async () => {
       await P.ensureFonts();
       const sh = currentSheet();
       $("sheets").innerHTML = sh.html;
       $("pInfo").textContent = `${nf(E.pick(r.words, S.lvl).length)} ${t("words")} · ${nf(sh.pages)} A4`;
       fit();
+      // Start making the PDF quietly in the background so Download is instant.
+      clearTimeout(vPdf.pre); vPdf.pre = setTimeout(() => { if (route.last === "pdf" && S.result.words.length) buildPdf().catch(() => { }) }, 700);
     };
     $("pOpts").onclick = e => { const b = e.target.closest(".chip"); if (!b) return; const k = b.dataset.o; S.opts[k] = !S.opts[k]; saveOpts(); b.classList.toggle("on", S.opts[k]); b.innerHTML = (S.opts[k] ? icon("check") : "") + esc(tog.find(x => x[0] === k)[1]); draw() };
     $("pLang").onclick = () => openTargetLang(() => vPdf(el));

@@ -145,6 +145,7 @@ const APP_K = {
   share: ["Compartilhar", "Share", "Compartir", "שיתוף", "Partager", "Condividi", "Поделиться"],
   print: ["Imprimir", "Print", "Imprimir", "הדפסה", "Imprimer", "Stampa", "Печать"],
   pdfPreview: ["Pré-visualização", "Preview", "Vista previa", "תצוגה מקדימה", "Aperçu", "Anteprima", "Предпросмотр"],
+  dlShort: ["Baixar PDF", "Download PDF", "Descargar PDF", "הורדת PDF", "Télécharger", "Scarica PDF", "Скачать PDF"],
   making: ["Gerando PDF…", "Generating PDF…", "Generando PDF…", "יוצר PDF…", "Génération du PDF…", "Generazione PDF…", "Создание PDF…"],
   page: ["Página", "Page", "Página", "עמוד", "Page", "Pagina", "Страница"],
   saved: ["PDF salvo", "PDF saved", "PDF guardado", "ה-PDF נשמר", "PDF enregistré", "PDF salvato", "PDF сохранён"],
