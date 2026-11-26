@@ -95,7 +95,8 @@
     if (top && !top.dataset.ready) {
       top.dataset.ready = "1";
       top.innerHTML = `<button class="sburger" id="sMenu" type="button" aria-label="Menu" aria-controls="sside" aria-expanded="false">${icon("bars")}</button>
-        <a class="sbrand" href="#/home"><img src="icons/logo-128.png" alt=""><span><b>${esc(t("appName"))}</b><small>${esc(t("brandSub"))}</small></span></a>`;
+        <a class="sbrand" href="#/home"><img src="icons/logo-128.png" alt=""><span><b>${esc(t("appName"))}</b><small>${esc(t("brandSub"))}</small></span></a>
+        <div class="sact" id="sAct"></div>`;
       $("sMenu").onclick = () => sideOpen(!document.body.classList.contains("side-open"));
       $("sscrim").onclick = () => sideOpen(false);
       addEventListener("keydown", e => { if (e.key === "Escape") sideOpen(false) });
@@ -107,6 +108,13 @@
         if ((e.deltaY < 0 && row.scrollLeft <= 0) || (e.deltaY > 0 && row.scrollLeft >= max - 1)) return;
         row.scrollLeft += e.deltaY; e.preventDefault();
       }, { passive: false });
+    }
+    // Always visible in the top bar: "+ Translate" and the language button.
+    const act = $("sAct");
+    if (act) {
+      act.innerHTML = `<a class="snewtop${cur === "translate" ? " on" : ""}" href="#/translate">${icon("plus")}<span>${esc(t("tabNew"))}</span></a>
+        <button class="pill" id="sLangTop" type="button" aria-label="${esc(t("appLang"))}">${icon("globe")}<span>${LC[L].toUpperCase()}</span></button>`;
+      $("sLangTop").onclick = openAppLang;
     }
     const pt = $("ptitle"); if (!pt) return;
     pt.innerHTML = o.brand ? "" : `${o.back ? `<button class="icon-btn" id="pBack" type="button" aria-label="${esc(t("back"))}">${icon("back", "flip")}</button>` : ""}<div><h1>${esc(o.title || "")}</h1>${o.sub ? `<p>${esc(o.sub)}</p>` : ""}</div>`;

@@ -209,3 +209,32 @@ body.gated #scr { max-width: 460px; margin: 30px auto 0; }
 
 /* Login screen: the name is already in the top bar */
 body.gated .ptitle { display: none; }
+
+/* Top bar actions: "+ Translate" and language, on every screen size */
+.sact { margin-inline-start: auto; display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+.snewtop { display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 12px; background: var(--grad-btn, #486FB1); color: #fff; font: 800 15px var(--f-ui); text-decoration: none; border: 1px solid rgba(72, 111, 177, .55); white-space: nowrap; }
+.snewtop svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.snewtop.on { box-shadow: 0 0 0 2px rgba(255, 255, 255, .25) inset; }
+.stop .pill { display: flex; align-items: center; gap: 6px; height: 42px; padding: 0 12px; border-radius: 99px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(72, 111, 177, .45); color: #fff; font: 800 13px var(--f-ui); letter-spacing: .5px; cursor: pointer; }
+.stop .pill svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+@media (max-width: 719px) {
+  .stop { gap: 10px; }
+  .sact { gap: 8px; }
+  .snewtop { height: 38px; padding: 0 12px; font-size: 14px; }
+  .stop .pill { height: 38px; padding: 0 10px; }
+}
+@media (max-width: 420px) {
+  .stop .sbrand small { display: none; }
+  .stop .sbrand b { font-size: 19px; }
+  .stop .sbrand img { width: 32px; height: 32px; }
+  .snewtop span { display: none; }
+  .snewtop { width: 40px; padding: 0; justify-content: center; }
+}
+
+/* Fonts: the brand name keeps its serif; titles and text use the rounded UI font, a bit heavier */
+body { font-weight: 500; }
+.display, .ptitle h1, .proc h2, .work b, .auth .display, [dir="rtl"] .display { font-family: var(--f-ui); font-weight: 800; letter-spacing: -.3px; }
+.ptitle h1 { font-size: 36px; }
+.r-home .hero .display { font-size: clamp(38px, 4.4vw, 64px); }
+.hero p, .ptitle p, .muted, .small, .tile small, .row .rt small { font-weight: 500; }
+@media (max-width: 719px) { .ptitle h1 { font-size: 28px; } .r-home .hero .display { font-size: 32px; } }
