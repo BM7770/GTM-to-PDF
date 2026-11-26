@@ -1,0 +1,35 @@
+/* A4 vocabulary sheet — copied from the website's index.html so the PDF
+ * produced by the app keeps exactly the same layout (210×297 mm, two tables,
+ * Hebrew/Aramaic column RTL with occurrence count). Used by the in-app preview,
+ * the PDF export and the print iframe. */
+.page{width:210mm;height:297mm;background:#fff;color:#111;padding:16mm 14mm 14mm;margin:0 0 14px;box-shadow:0 2px 10px #0004;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box}
+.page *{box-sizing:border-box}
+.ph{border-bottom:1.5px solid #14284b;padding-bottom:3mm;margin-bottom:4mm;display:flex;justify-content:space-between;align-items:flex-end}
+.ph h3{margin:0;font:600 17pt "Nunito",system-ui,sans-serif;color:#14284b}.ph span{font:10pt "Nunito",system-ui,sans-serif;color:#444}
+.ctx{font:9.5pt/1.35 "Nunito",system-ui,sans-serif;color:#333;margin:0 0 3mm}
+.lists{display:flex;gap:6mm;flex:1}.lists table{flex:1;border-collapse:collapse;table-layout:fixed;align-self:flex-start;width:50%}
+.lists td,.lists th{border:.5pt solid #b8bfcc;padding:0 2.2mm;height:11.4mm;vertical-align:middle;overflow:hidden}
+.lists th{height:8mm;font:600 8.5pt "Nunito",system-ui,sans-serif;color:#14284b;background:#f1f3f8;text-transform:uppercase;letter-spacing:.5px}
+.tr{font:10.5pt/1.15 "Nunito",system-ui,sans-serif;text-align:left;overflow-wrap:anywhere}.tr i{display:block;font-size:8pt;color:#667}.tr em{display:block;font-size:7.5pt;color:#555;line-height:1.15}
+.ar{direction:ltr;text-align:left;unicode-bidi:isolate;font:500 15.5pt "Frank Ruhl Libre","Noto Serif Hebrew",serif;width:38%}
+.ar-inner{display:flex;align-items:center;direction:ltr;justify-content:flex-end;width:100%;gap:6px}
+.ar-word{order:1;direction:rtl;unicode-bidi:isolate;text-align:right;white-space:normal}.ar-word.nek{font-family:"Noto Serif Hebrew","Frank Ruhl Libre",serif;line-height:1.6}
+.count{display:inline-block;margin-inline-start:5px;padding:1px 4px;border-radius:4px;background:#eef1f6;color:#526078;font:600 10px/1.5 system-ui,sans-serif;vertical-align:middle;direction:ltr}
+.ar .count{flex:0 0 auto;order:2;direction:ltr;unicode-bidi:isolate;margin:0;white-space:nowrap}
+.pf{margin-top:auto;font:8.5pt "Nunito",system-ui,sans-serif;color:#666;display:flex;justify-content:space-between;padding-top:3mm}
+@media print{@page{size:A4;margin:0}html,body{margin:0;padding:0;width:210mm;background:#fff}.page{box-shadow:none;margin:0;break-after:page}.page:last-child{break-after:auto}}
+/* Keep the A4 sheet fonts exactly as on the website, whatever the app UI font is. */
+.page .ar{font-family:"Frank Ruhl Libre","Noto Serif Hebrew",serif}
+.page .ar-word.nek{font-family:"Noto Serif Hebrew","Frank Ruhl Libre",serif}
+.page .ctx,.page .tr,.page .ph h3{font-family:"Nunito",system-ui,sans-serif}
+/* Mishnah to PDF and Tanach to PDF sheet themes (copied from those websites). */
+.pdf-selection{font:8.5pt/1.35 "Nunito",system-ui,sans-serif;margin:-1mm 0 4mm;padding:0 0 2.5mm;letter-spacing:.1px}
+.page.w-m .ph{border-bottom-color:#174d32}.page.w-m .ph h3{font:700 18pt "Cormorant Garamond",Georgia,serif;letter-spacing:.25px;color:#174d32}
+.page.w-m .lists th{color:#174d32}.page.w-m .pdf-selection{color:#526357;border-bottom:.5pt solid #d5e2d8}
+.page.w-t .ph{border-bottom-color:#c21a1a}.page.w-t .ph h3{font:700 19pt "Playfair Display",Georgia,serif;letter-spacing:.35px;color:#c21a1a}
+.page.w-t .lists th{color:#5d0911;background:#f8eeee}.page.w-t .pdf-selection{color:#70434a;border-bottom:.5pt solid #e8caca}
+/* Same title colours as the Gemara sheet for all three works. */
+.page.w-m .ph,.page.w-t .ph{border-bottom-color:#14284b}
+.page.w-m .ph h3,.page.w-t .ph h3{color:#14284b}
+.page.w-m .lists th,.page.w-t .lists th{color:#14284b;background:#f1f3f8}
+.page.w-m .pdf-selection,.page.w-t .pdf-selection{color:#526078;border-bottom:.5pt solid #d5dae4}

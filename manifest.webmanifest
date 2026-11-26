@@ -1,0 +1,23 @@
+{
+ "name": "GTM to PDF",
+ "short_name": "GTM to PDF",
+ "description": "Vocabulary sheets for any page of the Talmud, translated into 7 languages and exported as A4 PDF.",
+ "id": "./",
+ "start_url": "./#/home",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#0D1421",
+ "theme_color": "#2B4269",
+ "categories": ["education", "books", "productivity"],
+ "icons": [
+  {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  {"src": "icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+  {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ],
+ "shortcuts": [
+  {"name": "New translation", "url": "./#/translate", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+  {"name": "History", "url": "./#/history", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+ ]
+}
