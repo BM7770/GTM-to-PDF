@@ -27,6 +27,7 @@ self.addEventListener("fetch", e => {
     return;
   }
   if (url.origin !== location.origin) return;
+  if (/\.apk$/i.test(url.pathname)) return; // the Android app download goes straight to the network (not cached)
   // App files: network first (always the newest version online), cache as offline fallback.
   e.respondWith(fetch(req).then(res => { if (res.ok) { const c = res.clone(); caches.open(VERSION).then(k => k.put(req, c)); } return res; })
     .catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || Response.error())));

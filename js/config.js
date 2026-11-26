@@ -17,7 +17,7 @@
 const GTM_CONFIG = {
   version: "1.1",
   firebase: { apiKey: "AIzaSyA9fqbbGjaa6GbFoVFo9CdOyto_mJYWpyo", projectId: "gtm-to-pdf", appId: "1:630428625755:web:8e7242903f0699e32e087e" },
-  appUrl: "https://drive.google.com/file/d/1iRxJsYxRfgR1zD-cc_T2R5X-fJK3TSn0/view", // "Download the app" link (the update link set in Firebase takes priority)
+  appUrl: "https://bm7770.github.io/GTM-to-PDF/GTM-to-PDF.apk", // "Download the app" link (the update link set in Firebase takes priority)
   remoteConfig: true, // rules come from Firebase Remote Config (editable in the Firebase console)
   remoteConfigUrl: "",
   emulator: "", // development only (Firebase Auth emulator); must stay empty in releases
